@@ -1,8 +1,33 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# Library für PCD8544-kompatible Displays am MCP23016-Portexpander
+# Portiert aus den C-Quelltexten der beiden Projekte
+#  https://github.com/adafruit/Adafruit-PCD8544-Nokia-5110-LCD-library
+#  https://github.com/adafruit/Adafruit-GFX-Library
+
+# Konfiguration der Pins
+# (vgl. LCD-Aufdruck und Pinbelegung des MCP23016)
+SCLK = 4
+DIN = 5
+DC = 6
+RST = 7
+LED = 4
+# 0x00 für Pins 0.0-0.7, 0x01 für Pins 1.0-1.7
+PORT = 0x00
+
+# 1/0 Vertauschen um das Display zu invertieren
+BLACK = 1
+WHITE = 0
+
+LCDWIDTH = 84
+LCDHEIGHT = 48
+
 import smbus
 from time import sleep
-import sys
 from grafix import *
 
+# Beispielbild (von Sparkfun) für das Display
 LOGO = [
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -44,13 +69,6 @@ xUpdateMin, xUpdateMax, yUpdateMin, yUpdateMax = 0, 0, 0, 0
 bus = smbus.SMBus(0)
 status = 0
 
-SCLK = 4
-DIN = 5
-DC = 6
-RST = 7
-#RST = 0
-LED = 4
-PORT = 0x00
 
 def output(pin, value):
   global status
@@ -67,11 +85,6 @@ def updateBoundingBox(xmin, ymin, xmax, ymax):
   if ymin < yUpdateMin: yUpdateMin = ymin
   if ymax > yUpdateMax: yUpdateMax = ymax
 
-BLACK = 1
-WHITE = 0
-
-LCDWIDTH = 84
-LCDHEIGHT = 48
 
 MEMORY = [0x00 for x in xrange((LCDWIDTH*LCDHEIGHT)/8)]
 
@@ -238,32 +251,5 @@ def clearDisplay():
   cursor_y = cursor_x = 0
 
 if __name__ == "__main__":
-  if '--demo' in sys.argv:
-    begin(20)
-    print "Inited"
-    drawLine(0, 0, 40, 40, True)
-    print "Line Drawn"
-    display()
-    setTextColor(True, False)
-    write('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tem')
-    display()
-    sys.exit() 
-  elif '--write' in sys.argv:
-    print "Initializing"
-    try:
-      contrast = int(sys.argv[sys.argv.index('--write')+1])
-    except IndexError:
-      print "Usage: %s --write <contrast>\n(Try using values between 20 and 50)" % sys.argv[0]
-      sys.exit(1)
-    print "Using contrast %d" % contrast
-    begin(contrast, False)
-    print "Writing"
-    string = sys.stdin.read()
-    print "Text: '%s'" % string
-    setTextColor(True, False)
-    write(string)
-    display()
-    sys.exit(0)
-  else:
-    print "Usage:\n  %s --write <contrast>  Read text from STDIN and write to display\n  %s --demo  Show a demonstration"
+  print "Please run pypcd-demo.py"
 

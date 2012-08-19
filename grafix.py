@@ -1,6 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# Grafiklibrary für PCD8544-kompatible Displays
+# Portiert aus den C-Quelltexten des Projekts
+#  https://github.com/adafruit/Adafruit-GFX-Library
+
 from font import font
 
 drawPixelFun = None
