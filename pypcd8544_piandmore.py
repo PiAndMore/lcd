@@ -79,6 +79,7 @@ def output(pin, value):
   else:
     status = (status & ~(1<<pin))
   bus.write_byte_data(0x20,PORT,status)
+  sleep(0)
 
 def updateBoundingBox(xmin, ymin, xmax, ymax):
   global xUpdateMin, xUpdateMax, yUpdateMin, yUpdateMax
